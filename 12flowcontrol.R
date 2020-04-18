@@ -363,15 +363,122 @@ WriteOnNotebook(total.page.count = 10)
 
 
 ## For Loop:
+## Loop through a vector
+
+## for(iterator in vector) {
+## execute body
+## }
+
+WriteOnNotebook <- function(total.page.count)
+{
+    for(count in 1:total.page.count){
+        print(paste("Writing on Page Number:", count))
+    }
+    print("Page Finished!")
+}
+
+WriteOnNotebook(total.page.count = 10)
+## Results:
+## [1] "Writing on Page Number: 1"
+## [1] "Writing on Page Number: 2"
+## [1] "Writing on Page Number: 3"
+## [1] "Writing on Page Number: 4"
+## [1] "Writing on Page Number: 5"
+## [1] "Writing on Page Number: 6"
+## [1] "Writing on Page Number: 7"
+## [1] "Writing on Page Number: 8"
+## [1] "Writing on Page Number: 9"
+## [1] "Writing on Page Number: 10"
+## [1] "Page Finished!"
 
 
 
+## Apply: more advanced flow control mechanism
+## Widely used in data analysis
+## Returns a vector or array list of values obtained by applying a function
+## to margins of an array or matrix.
+## Margins - rows, columns, or both (each element)
+
+## apply(data, margin, function)
+
+## Margin: rows - 1, columns - 2, both - 1:2
+
+## DEMO 1: Inefficient way to find the total sum of marks for each student - 7+ lines of code! 
+## DEMO 2 using Apply will achieve the same results using a single line of code.
+
+student.marks <- matrix(c(70L, 75L, 72L, 80L, 50L,
+                          80L, 85L, 60L, 72L, 88L,
+                          60L, 70L, 87L, 55L, 90L,
+                          85L, 70L, 74L, 86L, 78L), ncol = 5, nrow = 4, byrow = TRUE)
+
+rownames(student.marks) <- c("Raj", "Rahul", "Priya", "Poonam")
+colnames(student.marks) <-
+    c("Physics", "Chemistry", "Mathematics", "Biology", "History")
+student.marks
+## Results:
+##        Physics Chemistry Mathematics Biology History
+## Raj         70        75          72      80      50
+## Rahul       80        85          60      72      88
+## Priya       60        70          87      55      90
+## Poonam      85        70          74      86      78
+
+result <- vector("numeric", length = nrow(student.marks)) ## stores total values for each student
+for(row in 1:nrow(student.marks)){                        ## iterates through number of rows in the matrix
+    sum <- 0                                              ## setting the variable sum to 0    
+    for(column in 1:ncol(student.marks)){                 ## iterates through the number of columns in the matrix
+        sum <- sum + student.marks[row, column]           ## adding the cell value to the sum variable
+    }                                                     ## will return total marks obtained by one student  
+    result[row] <- sum                                    ##
+}                                                         ## assigns the sum total to the result vector using proper indexing
+result                                                    ## print the result.
+
+## Result: [1] 347 385 362 393
+
+
+## DEMO 2: Using Apply
+
+apply(student.marks, 1, sum)
+## Results:    Raj  Rahul  Priya Poonam 
+##             347    385    362    393 
+
+apply(student.marks, 1, max)
+## Results:    Raj  Rahul  Priya Poonam 
+##              80     88     90     86 
+
+apply(student.marks, 1, which.max)
+## Results:    Raj  Rahul  Priya Poonam 
+##               4      5      5      4 
+
+colnames(student.marks)[apply(student.marks, 1, which.max)]
+## Results: [1] "Biology" "History" "History" "Biology"
+
+apply(student.marks, 2, mean)
+## Results:  Physics   Chemistry Mathematics     Biology     History 
+##             73.75       75.00       73.25       73.25       76.50 
+
+apply(student.marks, 2, max)
+## Results:   Physics   Chemistry Mathematics     Biology     History 
+##                 85          85          87          86          90 
+
+rownames(student.marks)[apply(student.marks, 2, which.max)]
+## Results: [1] "Poonam" "Rahul"  "Priya"  "Poonam" "Priya" 
+
+apply(student.marks, 1:2, function(x) x + 2)
+## Results:        Physics Chemistry Mathematics Biology History
+##          Raj         72        77          74      82      52
+##          Rahul       82        87          62      74      90
+##          Priya       62        72          89      57      92
+##          Poonam      87        72          76      88      80
 
 
 
+## Functions in Apply Family:
+## lapply: input - list, vector; output - list
+## sapply: input - list, vector; oupput - vector, matrix, array
+## vapply: input - list, vector; output - vector, matrix, array
 
-
-
+## rapply: recursive version of lappy
+## mapply: multivariate version of sapply
 
 
 
